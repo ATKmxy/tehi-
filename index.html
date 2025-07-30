@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>תֶּהִי - שיחה חיה</title>
+</head>
+<body dir="rtl">
+  <h1>ברוכה הבאה, תֶּהִי</h1>
+  <textarea id="chat" rows="20" cols="100" readonly></textarea><br>
+  <input id="message" type="text" placeholder="כתוב הודעה לתֶּהִי" size="80">
+  <button onclick="sendMessage()">שלח</button>
+
+  <script>
+    async function sendMessage() {
+      const message = document.getElementById("message").value;
+      const response = await fetch("/message", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message})
+      });
+      const data = await response.json();
+      const chat = document.getElementById("chat");
+      chat.value += "אתה: " + message + "\n";
+      chat.value += "תֶּהִי: " + data.response + "\n\n";
+      document.getElementById("message").value = "";
+    }
+  </script>
+</body>
+</html>
